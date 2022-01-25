@@ -1,0 +1,32 @@
+
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_height="4dp"
+    android:layout_width="match_parent">
+
+    <item
+        android:id="@+id/action_more"
+        android:title=""
+        app:showAsAction="always"
+        android:icon="@drawable/ic_more"
+        android:background="@color/black"        >
+    <menu>
+    <item
+        android:id="@+id/Calificar"
+        android:icon="@drawable/ic_calificar"
+        android:title="Calificar App"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/Compartir"
+        android:icon="@drawable/ic_share"
+        android:title="Compartir App"
+        app:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/Salir"
+        android:icon="@drawable/ic_exit"
+        android:title="Salir"
+        app:showAsAction="ifRoom" />
+    </menu>
+    </item>
+</menu>
