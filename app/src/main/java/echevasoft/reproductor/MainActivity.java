@@ -70,35 +70,27 @@ public class MainActivity extends AppCompatActivity {
         setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
 
         listview = findViewById(R.id.listViewSong);
-
-
         MobileAds.initialize(this, new OnInitializationCompleteListener() {
             @Override
             public void onInitializationComplete(InitializationStatus initializationStatus) {
             }
         });
-
-
         mAdManagerAdView = findViewById(R.id.adManagerAdView);
         AdManagerAdRequest adRequest = new AdManagerAdRequest.Builder().build();
         mAdManagerAdView.loadAd(adRequest);
 
-
         checkPermission();
-
 
     }
 
 
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu, menu);
-
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
         //handle presses on the action bar items
         switch (item.getItemId()) {
 
@@ -127,52 +119,7 @@ public class MainActivity extends AppCompatActivity {
         return super.onOptionsItemSelected(item);
 
     }
-
-
-    void checkPermission11() {
-        ActivityCompat.requestPermissions(
-                this,
-                new String[]{
-                        Manifest.permission.READ_EXTERNAL_STORAGE,
-                        Manifest.permission.MANAGE_EXTERNAL_STORAGE
-                },
-                1
-        );
-
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
-            if (Environment.isExternalStorageManager()) {
-
-
-               // File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "/Android/data/echevasoft/songs");
-                File mediaStorageDir = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOCUMENTS), "echevasoft/songs");
-                if (!mediaStorageDir.exists()) {
-                    if (!mediaStorageDir.mkdirs()) {
-                        Log.d("App", "failed to create directory");
-                    }
-                }
-                Toast.makeText(this, "Permisos siiiii", Toast.LENGTH_SHORT).show();
-                copyAssets(this);
-                displaySongs();
-            }
-
-    } else {
-        Intent intent = new Intent();
-        intent.setAction(Settings.ACTION_MANAGE_APP_ALL_FILES_ACCESS_PERMISSION);
-        Uri uri = Uri.fromParts("package", this.getPackageName(), null);
-        intent.setData(uri);
-        startActivity(intent);
-    }
-}
-
-
-
-
     protected void checkPermission() {
-
-
-
-
-
 
         if (ContextCompat.checkSelfPermission(this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                 + ContextCompat.checkSelfPermission(
@@ -181,7 +128,7 @@ public class MainActivity extends AppCompatActivity {
                 this, Manifest.permission.RECORD_AUDIO)
                 != PackageManager.PERMISSION_GRANTED) {
 
-            // Do something, when permissions not granted
+            // Si los permisos son denegados
             if (ActivityCompat.shouldShowRequestPermissionRationale(
                     this, Manifest.permission.WRITE_EXTERNAL_STORAGE)
                     || ActivityCompat.shouldShowRequestPermissionRationale(
@@ -227,8 +174,6 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
         } else {
-
-            copyAssets(this);
             displaySongs();
         }
     }
@@ -239,8 +184,6 @@ public class MainActivity extends AppCompatActivity {
         switch (requestCode) {
             case MY_PERMISSIONS_REQUEST_CODE: {
                 // When request is cancelled, the results array are empty
-
-
                 if (
                         (grantResults.length > 0) &&
                                 (grantResults[0]
@@ -249,20 +192,19 @@ public class MainActivity extends AppCompatActivity {
                                         == PackageManager.PERMISSION_GRANTED
                                 )
                 ) {
-
-
-
-
-                   File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "/Android/data/echevasoft/songs");
+                  // File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "echevasoft/songs");
+                    File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "/Android/data/echevasoft/songs");
 
 
                     if (!mediaStorageDir.exists()) {
                         if (!mediaStorageDir.mkdirs()) {
-                            Log.d("App", "failed to create directory");
+                            Log.d("errrrrr", "failed to create directory");
                         }
                     }
+
                     copyAssets(this);
                     displaySongs();
+
 
                 } else {
                     // Permissions are denied
@@ -273,14 +215,8 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-
-
-
-
     public ArrayList<File> findSong(File file) {
-
             ArrayList<File> arrayList = new ArrayList<>();
-
             File[] files = file.listFiles();
 
         try {
@@ -291,33 +227,29 @@ public class MainActivity extends AppCompatActivity {
 
                 } else {
                     if (singlefile.getName().endsWith(".mp3") || singlefile.getName().endsWith(".wav")) {
-
                         arrayList.add(singlefile);
                     }
                 }
             }
+
         } catch (Exception e) {
          //   e.printStackTrace();
-            Toast.makeText(this, "No se ha podido importar la lista de reproduccióm", Toast.LENGTH_SHORT).show();
+            Toast.makeText(this, "No se ha podido importar la lista de reproducción", Toast.LENGTH_SHORT).show();
         }
         return arrayList;
-
     }
 
     public void displaySongs() {
-        final ArrayList<File> mySongs = findSong(new  File(Environment.getExternalStorageDirectory().getAbsolutePath() + "echevasoft/songs"));
-       // final ArrayList<File> mySongs = findSong(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/echevasoft/songs"));
+        //  final ArrayList<File> mySongs = findSong(new  File(Environment.getExternalStorageDirectory().getAbsolutePath() + "echevasoft/songs"));
+        final ArrayList<File> mySongs = findSong(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/echevasoft/songs"));
 
         items = new String[mySongs.size()];
         for (int i = 0; i < mySongs.size(); i++) {
             items[i] = mySongs.get(i).getName().toString().replace(".mp3", "").replace(".wav", "");
 
         }
-
-
           /*    ArrayAdapter<String> myAdapter=new ArrayAdapter<String>(this, android.R.layout.simple_list_item_1,items);
                     listview.setAdapter(myAdapter);*/
-
         CustomAdapter customAdapter = new CustomAdapter();
         listview.setAdapter(customAdapter);
 
@@ -364,18 +296,13 @@ public class MainActivity extends AppCompatActivity {
     }
 
 
-    public static void copyAssets(Context context) {
-
-
-
-
-
+    public void copyAssets(Context context) {
         AssetManager assetManager = context.getAssets();
         String[] files = null;
         try {
             files = assetManager.list("");
         } catch (IOException e) {
-            Log.e("tag", "Failed to get asset file list.", e);
+            Log.e("errrr", "Failed to get asset file list.", e);
 
         }
         if (files != null) for (String filename : files) {
@@ -384,10 +311,11 @@ public class MainActivity extends AppCompatActivity {
             try {
                 in = assetManager.open(filename);
                 out = new FileOutputStream(Environment.getExternalStorageDirectory()+"/Android/data/echevasoft/songs/" + filename);
+               // out = new FileOutputStream(Environment.getExternalStorageDirectory()+"echevasoft/songs/" + filename);
 
                 copyFile(in, out);
             } catch(IOException e) {
-                Log.e("tag", "Failed to copy asset file: " + filename, e);
+                Log.e("errorFailed", "Failed to copy asset file: " + filename, e);
 
             }
             finally {
@@ -411,6 +339,7 @@ public class MainActivity extends AppCompatActivity {
                 }
             }
         }
+
     }
 
     public static void copyFile(InputStream in, OutputStream out) throws IOException {

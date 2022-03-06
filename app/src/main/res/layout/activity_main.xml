@@ -7,8 +7,6 @@
     android:background="@color/black"
     tools:context=".MainActivity">
 
-
-
             <ListView
                 android:id="@+id/listViewSong"
                 android:divider="@android:color/transparent"
