@@ -1,5 +1,13 @@
 <resources>
     <string name="app_name">Canciones de River Plate</string>
     <string name="salir">Salir</string>
+    <string name="permissions_denied">Permisos denegados</string>
+    <string name="error_import">No se ha podido importar la lista de reproducción</string>
+    <string name="qualify">Calificar App</string>
+    <string name="share">Compartir App</string>
+
+
+
+    
 
 </resources>

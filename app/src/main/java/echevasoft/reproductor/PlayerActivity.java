@@ -84,7 +84,7 @@ public class PlayerActivity extends AppCompatActivity {
 
 
 
-        getSupportActionBar().setTitle("Canciones de River Plate");
+        getSupportActionBar().setTitle(R.string.app_name);
         getSupportActionBar().setDisplayShowCustomEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
@@ -92,8 +92,6 @@ public class PlayerActivity extends AppCompatActivity {
         if (mediaPlayer != null) {
             mediaPlayer.stop();
             mediaPlayer.release();
-
-
         }
 
         Intent i = getIntent();
@@ -121,7 +119,6 @@ public class PlayerActivity extends AppCompatActivity {
             public void run() {
                 String currentTime = createTime(mediaPlayer.getCurrentPosition());
                 handler.postDelayed(this, delay);
-
             }
         }, delay);
 
@@ -130,11 +127,9 @@ public class PlayerActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying()) {
-
                     playbtn.setBackgroundResource(R.drawable.ic_play);
                     mediaPlayer.pause();
                 } else {
-
                     playbtn.setBackgroundResource(R.drawable.ic_pause);
                     mediaPlayer.start();
 
@@ -148,9 +143,7 @@ public class PlayerActivity extends AppCompatActivity {
         mediaPlayer.setOnCompletionListener(new MediaPlayer.OnCompletionListener() {
             @Override
             public void onCompletion(MediaPlayer mp) {
-
              btnnext.performClick();
-
             }
         });
 
@@ -159,12 +152,9 @@ public class PlayerActivity extends AppCompatActivity {
 
         if (audiosessionid != -1) {
             visualizer.setAudioSessionId(audiosessionid);
-
-
         }
 
-        //next
-
+        //next song
         btnnext.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -175,18 +165,13 @@ public class PlayerActivity extends AppCompatActivity {
                 Uri u = Uri.parse(mySongs.get(position).toString());
                 mediaPlayer = MediaPlayer.create(getApplicationContext(), u);
                 sname = mySongs.get(position).getName();
-                //.toString().replace(".mp3","").replace(".wav","");
                 txtsn.setText(sname.replace(".mp3", "").replace(".wav", ""));
                 mediaPlayer.start();
                 playbtn.setBackgroundResource(R.drawable.ic_pause);
 
-
-
                 int audiosessionid = mediaPlayer.getAudioSessionId();
                 if (audiosessionid != -1) {
                     visualizer.setAudioSessionId(audiosessionid);
-
-
                 }
 
 
@@ -210,11 +195,7 @@ public class PlayerActivity extends AppCompatActivity {
                 int audiosessionid = mediaPlayer.getAudioSessionId();
                 if (audiosessionid != -1) {
                     visualizer.setAudioSessionId(audiosessionid);
-
-
                 }
-
-
 
             }
         });
@@ -225,7 +206,6 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() + 10000);
-
                 }
             }
 
@@ -237,7 +217,6 @@ public class PlayerActivity extends AppCompatActivity {
             public void onClick(View v) {
                 if (mediaPlayer.isPlaying()) {
                     mediaPlayer.seekTo(mediaPlayer.getCurrentPosition() - 10000);
-
                 }
             }
         });
@@ -255,8 +234,6 @@ public class PlayerActivity extends AppCompatActivity {
         mAdManagerAdView = findViewById(R.id.adManagerAdView);
         AdManagerAdRequest adRequest = new AdManagerAdRequest.Builder().build();
         mAdManagerAdView.loadAd(adRequest);
-
-
     }
 
 
@@ -265,16 +242,11 @@ public class PlayerActivity extends AppCompatActivity {
         int min = duracion / 1000 / 60;
         int seg = duracion / 1000 % 60;
         time += min + ":";
-
         if (seg < 10) {
-
             time += "0";
         }
-
         time += seg;
-
         return time;
     }
-
 
 }

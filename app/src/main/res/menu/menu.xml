@@ -15,17 +15,17 @@
     <item
         android:id="@+id/Calificar"
         android:icon="@drawable/ic_calificar"
-        android:title="Calificar App"
+        android:title="@string/qualify"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/Compartir"
         android:icon="@drawable/ic_share"
-        android:title="Compartir App"
+        android:title="@string/share"
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/Salir"
         android:icon="@drawable/ic_exit"
-        android:title="Salir"
+        android:title="@string/salir"
         app:showAsAction="ifRoom" />
     </menu>
     </item>

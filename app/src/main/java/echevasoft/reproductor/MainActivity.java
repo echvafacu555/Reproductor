@@ -1,6 +1,5 @@
 package echevasoft.reproductor;
 
-import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
@@ -16,14 +15,11 @@ import android.content.pm.PackageManager;
 import android.content.res.AssetManager;
 
 import android.net.Uri;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.provider.Settings;
-import android.util.Log;
+
 
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,8 +45,6 @@ import com.google.android.gms.ads.admanager.AdManagerAdRequest;
 import com.google.android.gms.ads.admanager.AdManagerAdView;
 import com.google.android.gms.ads.initialization.InitializationStatus;
 import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-
-import dmax.dialog.SpotsDialog;
 
 
 public class MainActivity extends AppCompatActivity {
@@ -78,9 +72,7 @@ public class MainActivity extends AppCompatActivity {
         mAdManagerAdView = findViewById(R.id.adManagerAdView);
         AdManagerAdRequest adRequest = new AdManagerAdRequest.Builder().build();
         mAdManagerAdView.loadAd(adRequest);
-
         checkPermission();
-
     }
 
 
@@ -174,6 +166,7 @@ public class MainActivity extends AppCompatActivity {
                 );
             }
         } else {
+            copyAssets(this);
             displaySongs();
         }
     }
@@ -192,23 +185,17 @@ public class MainActivity extends AppCompatActivity {
                                         == PackageManager.PERMISSION_GRANTED
                                 )
                 ) {
-                  // File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "echevasoft/songs");
                     File mediaStorageDir = new File(Environment.getExternalStorageDirectory(), "/Android/data/echevasoft/songs");
 
-
                     if (!mediaStorageDir.exists()) {
-                        if (!mediaStorageDir.mkdirs()) {
-                            Log.d("errrrrr", "failed to create directory");
-                        }
+                     //   Log.d("errrrrra", "failed to create directory");
+                        mediaStorageDir.mkdirs();
                     }
-
                     copyAssets(this);
                     displaySongs();
-
-
                 } else {
                     // Permissions are denied
-                    Toast.makeText(this, "Permisos denegados", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.permissions_denied, Toast.LENGTH_SHORT).show();
                 }
                 return;
             }
@@ -233,14 +220,13 @@ public class MainActivity extends AppCompatActivity {
             }
 
         } catch (Exception e) {
-         //   e.printStackTrace();
-            Toast.makeText(this, "No se ha podido importar la lista de reproducción", Toast.LENGTH_SHORT).show();
+        //    e.printStackTrace();
+            Toast.makeText(this, R.string.error_import, Toast.LENGTH_SHORT).show();
         }
         return arrayList;
     }
 
     public void displaySongs() {
-        //  final ArrayList<File> mySongs = findSong(new  File(Environment.getExternalStorageDirectory().getAbsolutePath() + "echevasoft/songs"));
         final ArrayList<File> mySongs = findSong(new File(Environment.getExternalStorageDirectory().getAbsolutePath() + "/Android/data/echevasoft/songs"));
 
         items = new String[mySongs.size()];
@@ -302,8 +288,7 @@ public class MainActivity extends AppCompatActivity {
         try {
             files = assetManager.list("");
         } catch (IOException e) {
-            Log.e("errrr", "Failed to get asset file list.", e);
-
+           // Log.e("error", "Failed to get asset file list.", e);
         }
         if (files != null) for (String filename : files) {
             InputStream in = null;
@@ -311,11 +296,10 @@ public class MainActivity extends AppCompatActivity {
             try {
                 in = assetManager.open(filename);
                 out = new FileOutputStream(Environment.getExternalStorageDirectory()+"/Android/data/echevasoft/songs/" + filename);
-               // out = new FileOutputStream(Environment.getExternalStorageDirectory()+"echevasoft/songs/" + filename);
 
                 copyFile(in, out);
             } catch(IOException e) {
-                Log.e("errorFailed", "Failed to copy asset file: " + filename, e);
+             //  Log.e("error", "Failed to copy asset file: " + filename, e);
 
             }
             finally {
